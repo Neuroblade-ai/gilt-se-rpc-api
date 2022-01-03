@@ -1,0 +1,113 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "management.grpc.processor";
+option java_outer_classname = "ManagementProto";
+option objc_class_prefix = "HLW";
+
+import "google/protobuf/empty.proto";
+
+package gilt.rpc.management;
+
+// Interface exported by the server.
+service TableManager {
+  // Creates a table entry
+  rpc CreateTable (Table) returns (google.protobuf.Empty) {}
+  // Gets a table entry
+  rpc GetTable (TableName) returns (Table) {}
+  // Gets row count of table
+  rpc GetTableRowCount (TableName) returns (TableRowCount) {}
+  // Gets keys (primary, range partition) of table
+  rpc GetTableKeys (TableName) returns (TableKeys) {}
+  // Lists tables
+  rpc ListTables (google.protobuf.Empty) returns (Tables) {}
+  // Drops table
+  rpc DropTable (TableName) returns (google.protobuf.Empty) {}
+  // Drops tables
+  rpc DropTables (TableNames) returns (google.protobuf.Empty) {}
+}
+
+// The request message contains table identifier
+message TableName {
+  string table_id = 1;
+}
+
+// The request message contains table identifiers
+message TableNames {
+  repeated TableName tables = 1;
+}
+
+message PrimaryKey {
+  repeated uint32 column_indices = 1;
+}
+
+message RangePartitionKey {
+  repeated uint32 column_indices = 1;
+}
+
+// Column representation
+message Column {
+  // Column type
+  enum Type {
+    BIT = 0;
+    BOOLEAN = 1;
+    TINYINT = 2;
+    SMALLINT = 3;
+    INTEGER = 4;
+    BIGINT = 5;
+    NUMERIC = 6; // Not supported yet.
+    DECIMAL = 7;
+    FLOAT = 8;
+    REAL = 9;
+    DOUBLE = 10;
+    DATE = 11;
+    TIME = 12;
+    TIMESTAMP = 13;
+    CHAR = 14;
+  }
+
+  string column_id = 1;
+  Type type = 2;
+  uint32 type_size = 3; // for CHAR
+  uint32 precision = 4;
+  uint32 scale = 5;
+}
+
+message TableSchema {
+  repeated Column columns = 1;
+  repeated PrimaryKey primary_keys = 2;
+  RangePartitionKey range_partition_key = 3;
+}
+
+// The request message containing the table attributes.
+message Table {
+  string table_id = 1;
+  TableSchema schema = 2;
+}
+
+message Tables {
+  repeated Table tables = 1;
+}
+
+message TableRowCount {
+  uint64 row_count = 1;
+}
+
+message TableKeys {
+  repeated PrimaryKey primary_keys = 1;
+  RangePartitionKey range_partition_key = 2;
+}
