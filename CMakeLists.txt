@@ -50,8 +50,8 @@ target_link_libraries(management_proto
 #   ${_GRPC_GRPCPP}
 #   ${_PROTOBUF_LIBPROTOBUF})
 
-set(client_sources ${CMAKE_CURRENT_SOURCE_DIR}/SEClient.cpp)
-set(client_headers ${CMAKE_CURRENT_SOURCE_DIR}/SEClient.h)
+set(client_sources ${CMAKE_CURRENT_SOURCE_DIR}/src/SEClient.cpp)
+set(client_headers ${CMAKE_CURRENT_SOURCE_DIR}/src/SEClient.h)
 
 add_library(SEClient
   ${client_sources}
