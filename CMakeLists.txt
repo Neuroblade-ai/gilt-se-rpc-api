@@ -30,6 +30,7 @@ set_source_files_properties(${MANAGEMENT_GENERATED_PROTO_FILES} PROPERTIES GENER
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 include_directories(SYSTEM
+    ${ARROW_INCLUDE_DIR}
     ${FMT_INCLUDE_DIR})
 
 # management_proto
